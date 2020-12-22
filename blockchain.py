@@ -10,6 +10,8 @@ import datetime
 import hashlib
 import json
 from flask import jsonify
+import requests
+from urllib.parse import urlparse
 
 # blockchain class Core
 
@@ -17,16 +19,20 @@ class Blockchain:
 
     def __init__(self) -> None:
         self.chain:list = []
+        self.transactions:list = []
         self.create_block(proof = 1, previous_hash = '0')
+        self.nodes = set()
 
     def create_block(self, proof, previous_hash) -> list:
         block:dict = {
             'index' : len(self.chain) + 1,
             'timestamp' : str(datetime.datetime.now()),
             'proof' : proof,
-            'previous_hash' : previous_hash
+            'previous_hash' : previous_hash,
+            'transactions' : self.transactions
         }
-
+        
+        self.transactions = []
         self.chain.append(block)
         return block
 
@@ -72,3 +78,39 @@ class Blockchain:
         return True
 
 
+    def add_transaction(self, sender, receiver, amount) -> None:
+
+        self.transactions.append({
+            'sender' : sender,
+            'receiver' : receiver,
+            'amount' : amount
+        })
+
+        previous_block = self.get_previous_block()
+        return previous_block['index'] + 1
+
+
+    def add_node(self, address) -> None:
+
+        parsed_url = urlparse(address)
+        self.nodes.add(parsed_url.netloc)
+
+    
+    def replace_chain(self) -> bool:
+
+        network = self.nodes
+        longest_chain = None
+        max_length = len(self.chain)
+
+        for node in network:
+            response = requests.get(f'http://{node}/get_chain')
+            if response.status_code == 200:
+                length = response.json()['length']
+                chain = response.json()['chain']
+                if length > max_length and self.is_chain_valid(chain):
+                    max_length = length
+                    longest_chain = chain 
+        if longest_chain:
+            self.chain = longest_chain
+            return True
+        return False
