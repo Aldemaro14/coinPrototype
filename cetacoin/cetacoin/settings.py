@@ -59,11 +59,21 @@ MIDDLEWARE = [
 ]
 
 CORS_ORIGIN_ALLOW_ALL = False
-
+CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_WHITELIST = (
        'http://localhost:3000',
 )
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny', # make all endpoints private
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+
+}
 
 AUTH_USER_MODEL = 'authentication.UserCrypto'
 
