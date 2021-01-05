@@ -21,14 +21,14 @@ Backend of cetacoin is responsible of taking care about the following list
 
 ### Prerequisites 
 
-`pip install django`
-`pip install djangorestframework-simplejwt`
-`pip install PyJWT`
-`pip install django-cors-headers`
-`pip install djangorestframework`
+- `pip install django`
+- `pip install djangorestframework-simplejwt`
+- `pip install PyJWT`
+- `pip install django-cors-headers`
+- `pip install djangorestframework`
  
  ### Usage
  The app has those endpoint to use it
  
-`/api/auth/register`
-`/api/auth/login`
+- `/api/auth/register`
+- `/api/auth/login`
