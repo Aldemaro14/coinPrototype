@@ -40,6 +40,7 @@ class UserManager(BaseUserManager):
 class UserCrypto(AbstractUser):
     username = None
     email = models.EmailField(('email address'), unique=True)
+    #wallet_id = models.ManyToManyField(Wallet)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
