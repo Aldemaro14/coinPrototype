@@ -1,12 +1,13 @@
 from django.shortcuts import render
 from rest_framework.generics import GenericAPIView
-from .serializers import UserSerializer, LoginSerializer
+from .serializers import UserSerializer, LoginSerializer, MyTokenObtainPairSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from django.conf import settings
 from django.contrib import auth
 from rest_framework.permissions import AllowAny
 import jwt
+from rest_framework_simplejwt.views import TokenObtainPairView
 # Create your views here.
 
 
@@ -43,5 +44,7 @@ class LoginView(GenericAPIView):
 
         return Response({'detail': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
-
+class MyObtainTokenPairView(TokenObtainPairView):
+    permission_classes = (AllowAny,)
+    serializer_class = MyTokenObtainPairSerializer
 

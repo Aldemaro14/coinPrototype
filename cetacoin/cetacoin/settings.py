@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'ced0&8dy3ew(%#)*ist6q#^m)&wldg25dksr2-h**44lef1vbi'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -66,7 +66,7 @@ CORS_ORIGIN_WHITELIST = (
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.AllowAny', # make all endpoints private
+        'rest_framework.permissions.IsAuthenticated', # make all endpoints private
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         
