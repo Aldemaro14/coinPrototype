@@ -1,7 +1,18 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from authentication.models import UserCrypto
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+
+    @classmethod
+    def get_token(cls, UserCrypto):
+        token = super(MyTokenObtainPairSerializer, cls).get_token(UserCrypto)
+
+        # Add custom claims
+        token['email'] = UserCrypto.email
+        return token
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(max_length=65, min_length=8, write_only=True)
