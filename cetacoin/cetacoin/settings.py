@@ -14,7 +14,6 @@ from pathlib import Path
 import os
 
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -46,7 +45,6 @@ INSTALLED_APPS = [
 ]
 
 
-
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -61,15 +59,15 @@ MIDDLEWARE = [
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_WHITELIST = (
-       'http://localhost:3000',
+    'http://localhost:3000',
 )
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated', # make all endpoints private
+        'rest_framework.permissions.AllowAny',  # make all endpoints private
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        
+
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
 
@@ -142,7 +140,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY','JWT_SECRET_KEY')
+JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY', 'JWT_SECRET_KEY')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
