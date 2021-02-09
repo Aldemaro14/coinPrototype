@@ -14,11 +14,13 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         # print(user.email)
         # print(user.username)
         token['email'] = str(user.email)
-        print(token['email'])
-        print(type(token))
+        token['first_name'] = str(user.first_name)
+        token['last_name'] = str(user.last_name)
+        # print(token['email'])
+        # print(type(token))
         return token
-    # def get_tokens_for_user(UserCrypto):
-    #     refresh = RefreshToken.for_user(UserCrypto)
+    # def get_tokens_for_user(user):
+    #     refresh = RefreshToken.for_user(user)
     #     return {
     #         'refresh': str(refresh),
     #         'access': str(refresh.access_token),
