@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.generics import GenericAPIView
-from .serializers import UserSerializer, LoginSerializer, MyTokenObtainPairSerializer
+from .serializers import UserSerializer, LoginSerializer, MyTokenObtainPairSerializer, WalletSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from django.conf import settings
@@ -16,11 +16,31 @@ class RegisterView(GenericAPIView):
 
     def post(self, request):
         serializer = UserSerializer(data=request.data)
+        print(request.data)
+        print(type(request.data))
         if serializer.is_valid():
             new_user = serializer.save()
             if new_user:
+                # print(new_user)
+                # print(new_user.id)
+                print(serializer)
+                wallet_dict = {
+                    "idWallet": 2,
+                    "amount": 0,
+                    "currency": "bitcoin",
+                    "test": "test",
+                    "user": new_user.id,
+                }
+                wallet_serializer = WalletSerializer(data=wallet_dict)
+                print(wallet_serializer)
+                if wallet_serializer.is_valid():
+                    wallet_serializer.save()
+                    data = {
+                        "user_data": serializer.data,
+                        "wallet_data": wallet_serializer.data
+                    }
+                    return Response(data, status=status.HTTP_201_CREATED)
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
-
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from authentication.models import UserCrypto
+from authentication.models import UserCrypto, Wallet
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 
@@ -58,3 +58,10 @@ class LoginSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserCrypto
         fields = ['email', 'password']
+
+
+class WalletSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Wallet
+        fields = ['idWallet', 'amount', 'currency',
+                  'test', 'user']

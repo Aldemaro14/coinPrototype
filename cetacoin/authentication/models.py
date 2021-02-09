@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.utils.translation import ugettext_lazy as _
 # Create your models here.
 
+
 class UserManager(BaseUserManager):
     """Define a model manager for User model with no username field."""
 
@@ -47,8 +48,10 @@ class UserCrypto(AbstractUser):
 
     objects = UserManager()
 
+
 class Wallet(models.Model):
     idWallet = models.IntegerField()
     amount = models.DecimalField(max_digits=12, decimal_places=5)
     currency = models.CharField(max_length=15)
     test = models.CharField(max_length=122)
+    user = models.ForeignKey(UserCrypto, on_delete=models.CASCADE)
