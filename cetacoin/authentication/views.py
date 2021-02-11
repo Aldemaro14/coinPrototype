@@ -8,6 +8,7 @@ from django.contrib import auth
 from rest_framework.permissions import AllowAny
 import jwt
 from rest_framework_simplejwt.views import TokenObtainPairView
+from django.db import transaction
 # Create your views here.
 
 
@@ -15,33 +16,32 @@ class RegisterView(GenericAPIView):
     serializer_class = UserSerializer
 
     def post(self, request):
-        serializer = UserSerializer(data=request.data)
-        print(request.data)
-        print(type(request.data))
-        if serializer.is_valid():
-            new_user = serializer.save()
-            if new_user:
-                # print(new_user)
-                # print(new_user.id)
-                print(serializer)
-                wallet_dict = {
-                    "idWallet": 2,
-                    "amount": 0,
-                    "currency": "bitcoin",
-                    "test": "test",
-                    "user": new_user.id,
-                }
-                wallet_serializer = WalletSerializer(data=wallet_dict)
-                print(wallet_serializer)
-                if wallet_serializer.is_valid():
-                    wallet_serializer.save()
-                    data = {
-                        "user_data": serializer.data,
-                        "wallet_data": wallet_serializer.data
+        with transaction.atomic():
+            serializer = UserSerializer(data=request.data)
+            if serializer.is_valid():
+                new_user = serializer.save()
+                if new_user:
+                    print(serializer)
+                    wallet_dict = {
+                        "idWallet": 2,
+                        "amount": 0,
+                        "currency": "bitcoin",
+                        "test": "test",
+                        "user": new_user.id,
                     }
-                    return Response(data, status=status.HTTP_201_CREATED)
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                    wallet_serializer = WalletSerializer(data=wallet_dict)
+                    print(wallet_serializer)
+                    if wallet_serializer.is_valid():
+                        wallet_serializer.save()
+                        data = {
+                            "user_data": serializer.data,
+                            "wallet_data": wallet_serializer.data,
+                        }
+                        return Response(data, status=status.HTTP_201_CREATED)
+                    # deleting new user if the default wallet could not be createad
+                    new_user.delete()
+                    return Response(wallet_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class LoginView(GenericAPIView):
