@@ -5,6 +5,16 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    # Override validate to return more user attributes
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        refresh = self.get_token(self.user)
+        data['refresh'] = str(refresh)
+        data['access'] = str(refresh.access_token)
+        data['email'] = self.user.email
+        data['first_name'] = self.user.first_name
+        data['last_name'] = self.user.last_name
+        return data
 
     @classmethod
     def get_token(cls, user):
@@ -13,13 +23,13 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         # print(user)
         # print(user.email)
         # print(user.username)
-        token['email'] = str(user.email)
-        token['first_name'] = str(user.first_name)
-        token['last_name'] = str(user.last_name)
+        #token['email'] = str(user.email)
+        #token['first_name'] = str(user.first_name)
+        #token['last_name'] = str(user.last_name)
         # print(token['email'])
         # print(type(token))
         return token
-    # def get_tokens_for_user(user):
+    # def get_tokens_for_users(user):
     #     refresh = RefreshToken.for_user(user)
     #     return {
     #         'refresh': str(refresh),
