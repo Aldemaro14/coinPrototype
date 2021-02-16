@@ -9,6 +9,7 @@ from rest_framework.permissions import AllowAny
 import jwt
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.db import transaction
+from bitcoinlib import wallets
 # Create your views here.
 
 
@@ -21,24 +22,30 @@ class RegisterView(GenericAPIView):
             if serializer.is_valid():
                 new_user = serializer.save()
                 if new_user:
-                    print(serializer)
+                    # Creating Wallet
+                    w = wallets.Wallet.create(
+                        "Wallet" + str(new_user.id)+"BTC")
                     wallet_dict = {
-                        "idWallet": 2,
+                        "idWallet": "Wallet" + str(new_user.id)+"BTC",
                         "amount": 0,
-                        "currency": "bitcoin",
-                        "test": "test",
+                        "currency": w.network.name,
+                        "alias": "alias",
                         "user": new_user.id,
                     }
                     wallet_serializer = WalletSerializer(data=wallet_dict)
                     print(wallet_serializer)
                     if wallet_serializer.is_valid():
+                        # Saving wallet object associated for the user
                         wallet_serializer.save()
                         data = {
                             "user_data": serializer.data,
                             "wallet_data": wallet_serializer.data,
+                            "wallet_bitcoinb": w.as_json(),
                         }
                         return Response(data, status=status.HTTP_201_CREATED)
                     # deleting new user if the default wallet could not be createad
+                    wallets.wallet_delete_if_exists(
+                        "Wallet" + str(new_user.id)+"BTC")
                     new_user.delete()
                     return Response(wallet_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -50,8 +50,8 @@ class UserCrypto(AbstractUser):
 
 
 class Wallet(models.Model):
-    idWallet = models.IntegerField()
+    idWallet = models.CharField(max_length=32)
     amount = models.DecimalField(max_digits=12, decimal_places=5)
     currency = models.CharField(max_length=15)
-    test = models.CharField(max_length=122)
+    alias = models.CharField(max_length=122)
     user = models.ForeignKey(UserCrypto, on_delete=models.CASCADE)
