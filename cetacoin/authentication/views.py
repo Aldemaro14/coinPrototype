@@ -22,7 +22,7 @@ class RegisterView(GenericAPIView):
             if serializer.is_valid():
                 new_user = serializer.save()
                 if new_user:
-                    # Creating Wallet
+                    # Creating Wallet from bitcoinlib wallet
                     w = wallets.Wallet.create(
                         "Wallet" + str(new_user.id)+"BTC")
                     wallet_dict = {
