@@ -17,6 +17,7 @@ RUN mkdir /app
 #Change "./app" for your project name
 COPY ./cetacoin /app
 WORKDIR /app
+RUN python manage.py makemigrations
 RUN python manage.py migrate
 COPY ./scripts /scripts
 RUN chmod +x /scripts/*
