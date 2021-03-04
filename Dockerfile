@@ -17,16 +17,14 @@ RUN mkdir /app
 #Change "./app" for your project name
 COPY ./cetacoin /app
 WORKDIR /app
-RUN python manage.py makemigrations
-RUN python manage.py migrate
 COPY ./scripts /scripts
 RUN chmod +x /scripts/*
-
+RUN chmod 666 db.sqlite3
 RUN mkdir -p /vol/web/media
 RUN mkdir -p /vol/web/static
-RUN adduser -D user
-RUN chown -R user:user /vol
-RUN chmod -R 755 /vol/web
-USER user
+#RUN adduser -D user
+#RUN chown -R user:user /vol
+#RUN chmod -R 755 /vol/web
+#USER user
 
 CMD ["entrypoint.sh"]

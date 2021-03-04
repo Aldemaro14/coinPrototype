@@ -7,4 +7,4 @@ set -e
 python manage.py collectstatic --noinput
 
 #Change app.wsgi for your project name + .wsgi
-uwsgi --socket :8000 --master --enable-threads --module app.wsgi
+uwsgi --socket :8000 --master --enable-threads --module cetacoin.wsgi
