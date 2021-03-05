@@ -50,7 +50,7 @@ class UserCrypto(AbstractUser):
 
 
 class Wallet(models.Model):
-    idWallet = models.CharField(max_length=32)
+    idWallet = models.CharField(max_length=200)
     amount = models.DecimalField(max_digits=12, decimal_places=5)
     currency = models.CharField(max_length=15)
     alias = models.CharField(max_length=122)
