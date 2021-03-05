@@ -1,3 +1,4 @@
+from . import params
 from django.shortcuts import render
 from rest_framework.generics import GenericAPIView
 from .serializers import UserSerializer, LoginSerializer, MyTokenObtainPairSerializer, WalletSerializer
@@ -6,16 +7,17 @@ from rest_framework import status
 from django.conf import settings
 from django.contrib import auth
 from rest_framework.permissions import AllowAny
-import jwt
+import jwt  
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.db import transaction
-from bitcoinlib import wallets
+#Account creation for algorant network
+from algosdk import account, encoding, mnemonic, algod
+#from bitcoinlib import wallets
 # Create your views here.
 
 
 class RegisterView(GenericAPIView):
     serializer_class = UserSerializer
-
     def post(self, request):
         with transaction.atomic():
             serializer = UserSerializer(data=request.data)
@@ -23,12 +25,18 @@ class RegisterView(GenericAPIView):
                 new_user = serializer.save()
                 if new_user:
                     # Creating Wallet from bitcoinlib wallet
-                    w = wallets.Wallet.create(
-                        "Wallet" + str(new_user.id)+"BTC")
+                    #w = wallets.Wallet.create("Wallet" + str(new_user.id)+"BTC")
+                    # create a algod client
+                    acl = algod.AlgodClient(params.algod_token, params.algod_address)
+                    # generate an account
+                    private_key, address = account.generate_account()
+                    # extract the mnemonic phrase from the private key
+                    mn = mnemonic.from_private_key(private_key)
                     wallet_dict = {
-                        "idWallet": "Wallet" + str(new_user.id)+"BTC",
+                        #"idWallet": "Wallet" + str(new_user.id)+"BTC",
+                        "idWallet": mn,
                         "amount": 0,
-                        "currency": w.network.name,
+                        "currency": "algos",
                         "alias": "alias",
                         "user": new_user.id,
                     }
@@ -40,12 +48,12 @@ class RegisterView(GenericAPIView):
                         data = {
                             "user_data": serializer.data,
                             "wallet_data": wallet_serializer.data,
-                            "wallet_bitcoinb": w.as_json(),
+                            #"wallet_bitcoinb": w.as_json(),
+                            "wallet_bitcoinb":acl.account_info(address),
                         }
                         return Response(data, status=status.HTTP_201_CREATED)
                     # deleting new user if the default wallet could not be createad
-                    wallets.wallet_delete_if_exists(
-                        "Wallet" + str(new_user.id)+"BTC")
+                    #wallets.wallet_delete_if_exists("Wallet" + str(new_user.id)+"BTC")
                     new_user.delete()
                     return Response(wallet_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
