@@ -41,7 +41,7 @@ class RegisterView(GenericAPIView):
                         "user": new_user.id,
                     }
                     wallet_serializer = WalletSerializer(data=wallet_dict)
-                    print(wallet_serializer)
+                    #print(wallet_serializer)
                     if wallet_serializer.is_valid():
                         # Saving wallet object associated for the user
                         wallet_serializer.save()
