@@ -4,6 +4,7 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+py-algorand-sdk = "*"
 
 [packages]
 asgiref = "==3.3.1"
