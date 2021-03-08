@@ -1,16 +1,24 @@
 from django.shortcuts import render
 from authentication.models import UserCrypto, Wallet
 from authentication import params
+from authentication.serializers import WalletSerializer
+#Rest-framework imports
+from rest_framework.generics import GenericAPIView
+from rest_framework.response import Response
 #Account creation for algorant network
 from algosdk import account, encoding, mnemonic, algod
+#Transaction in views
+from django.db import transaction
+#Status in response
+from rest_framework import status
 # Create your views here.
 
 
 class WalletCreationView(GenericAPIView):    
-    wallet_serializer = WalletSerializer(data=wallet_dict)
+    serializer_class = WalletSerializer
     def post(self, request):
         with transaction.atomic():
-            print(request)
+            print(request.data)
             user=UserCrypto.objects.get(email= request.data['email'])
             # create a algod client
             acl = algod.AlgodClient(params.algod_token, params.algod_address)
@@ -26,36 +34,31 @@ class WalletCreationView(GenericAPIView):
                 "alias": "alias",
                 "user": user.id,
             }
-            serializer = WalletSerializer(data= wallet_dict)
+            wallet_serializer = WalletSerializer(data= wallet_dict)
             if wallet_serializer.is_valid():
-                        # Saving wallet object associated for the user
+                # Saving wallet object associated for the user
                 wallet_serializer.save()
                 data = {                    
                     "wallet_data": wallet_serializer.data,
                     #"wallet_bitcoinb": w.as_json(),
-                    "wallet_bitcoinb":acl.account_info(address),
+                    "wallet_crypto":acl.account_info(address),
                 }
-                return Response(data, status=status.HTTP_201_CREATED)
-            # deleting new user if the default wallet could not be createad
-            #wallets.wallet_delete_if_exists("Wallet" + str(new_user.id)+"BTC")
-            new_user.delete()
+                return Response(data, status=status.HTTP_201_CREATED)           
             return Response(wallet_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             
 class WalletListView(GenericAPIView):    
-    wallet_serializer = WalletSerializer(data=wallet_dict)
+    serializer_class = WalletSerializer
     def get(self, request):        
-            print(request)            
+            print(request.data)            
             user=UserCrypto.objects.get(email= request.data['email'])
-            wallets = Wallet.objects.filter(user=user)
-            serializer = WalletSerializer(data= wallets, many=True)
-            data = {                    
-                "wallet_data": serializer.data,
-                #"wallet_bitcoinb": w.as_json(),
-                "wallet_bitcoinb":acl.account_info(address),
-            }
-            return Response(data)
-            # deleting new user if the default wallet could not be createad
-            #wallets.wallet_delete_if_exists("Wallet" + str(new_user.id)+"BTC")            
+            wallets = Wallet.objects.filter(user=user.id)
+            serializer = WalletSerializer(wallets, many=True)            
+            return Response(serializer.data, status=status.HTTP_201_CREATED)                       
+            # data = {                    
+            #     "wallet_data": serializer.data,   
+            # }
+            
+            
 
                     
 
