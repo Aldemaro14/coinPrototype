@@ -4,6 +4,7 @@ services:
   app:
     build:
       context: .
+      dockerfile: local.Dockerfile
     ports:
       - "8000:8000"
     volumes:

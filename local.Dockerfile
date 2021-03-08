@@ -4,27 +4,29 @@ ENV PATH="/scripts:${PATH}"
 
 #COPY ./requirements.txt /requirements.txt
 RUN pip install pipenv
-RUN apk add --update --no-cache --virtual .tmp gcc libc-dev linux-headers build-base 
+RUN apk add --update --no-cache --virtual .tmp gcc libc-dev linux-headers build-base libffi-dev 
 RUN apk add openssl openssl-dev python3-dev gmp-dev postgresql-dev sqlite-dev
 #RUN pip install -r /requirements.txt
 #RUN apk del .tmp
 WORKDIR /usr/src
 COPY Pipfile .
-COPY Pipfile.lock .
-RUN pipenv install --system --deploy --ignore-pipfile
-RUN pip install bitcoinlib
+#COPY Pipfile.lock .
+#RUN pipenv install --dev
+RUN pipenv install --system --dev --skip-lock
+#RUN pip install bitcoinlib
+RUN pip install py-algorand-sdk
 RUN mkdir /app
 #Change "./app" for your project name
 COPY ./cetacoin /app
+#app workdir
 WORKDIR /app
 COPY ./scripts /scripts
 RUN chmod +x /scripts/*
-RUN chmod 666 db.sqlite3
 RUN mkdir -p /vol/web/media
 RUN mkdir -p /vol/web/static
-#RUN adduser -D user
-#RUN chown -R user:user /vol
-#RUN chmod -R 755 /vol/web
-#USER user
+RUN adduser -D user
+RUN chown -R user:user /vol
+RUN chmod -R 755 /vol/web
+USER user
 
 CMD ["entrypoint.sh"]
