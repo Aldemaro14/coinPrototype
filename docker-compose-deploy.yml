@@ -7,9 +7,22 @@ services:
     volumes:
       - static_data:/vol/web
     environment:
+      #------DB configuration
+      - DB_HOST=db
+      - DB_NAME=crypto
+      - DB_USER=postgres
+      - DB_PASSWORD=crypto_money
+      #------CORS configuration
+      - CORS_ORIGIN_ALL:1
+      - CORS_ALLOW=1
+      #- CORS_ALLOWED_HOSTS:'http://localhost:3000'      
+      #------Settings configuration
+      - DEBUG=0
+      - ALLOWED_HOSTS=*
       - SECRET_KEY=samplesecret123
-      - ALLOWED_HOSTS=127.0.0.1,localhost      
-      - DEBUG=1
+      #-------JWT configuration
+      - JWT_SECRET_KEY:JWT_SECRET_KEY
+      
 
   proxy:
     build:

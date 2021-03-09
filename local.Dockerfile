@@ -11,10 +11,9 @@ RUN apk add openssl openssl-dev python3-dev gmp-dev postgresql-dev sqlite-dev
 WORKDIR /usr/src
 COPY Pipfile .
 #COPY Pipfile.lock .
-#RUN pipenv install --dev
 RUN pipenv install --system --dev --skip-lock
 #RUN pip install bitcoinlib
-RUN pip install py-algorand-sdk
+#RUN pip install py-algorand-sdk
 RUN mkdir /app
 #Change "./app" for your project name
 COPY ./cetacoin /app

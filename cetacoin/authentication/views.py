@@ -49,7 +49,7 @@ class RegisterView(GenericAPIView):
                             "user_data": serializer.data,
                             "wallet_data": wallet_serializer.data,
                             #"wallet_bitcoinb": w.as_json(),
-                            "wallet_bitcoinb":acl.account_info(address),
+                            "wallet_net_info":acl.account_info(address),
                         }
                         return Response(data, status=status.HTTP_201_CREATED)
                     # deleting new user if the default wallet could not be createad
