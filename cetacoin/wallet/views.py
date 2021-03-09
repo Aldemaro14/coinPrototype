@@ -48,7 +48,7 @@ class WalletCreationView(GenericAPIView):
             
 class WalletListView(GenericAPIView):    
     serializer_class = WalletSerializer
-    def get(self, request):        
+    def post(self, request):        
             print(request.data)            
             user=UserCrypto.objects.get(email= request.data['email'])
             wallets = Wallet.objects.filter(user=user.id)
