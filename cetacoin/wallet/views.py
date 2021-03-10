@@ -11,6 +11,7 @@ from algosdk import account, encoding, mnemonic, algod
 from django.db import transaction
 #Status in response
 from rest_framework import status
+from django.http import JsonResponse
 # Create your views here.
 
 
@@ -48,8 +49,7 @@ class WalletCreationView(GenericAPIView):
             
 class WalletListView(GenericAPIView):    
     serializer_class = WalletSerializer
-    def post(self, request):        
-            print(request.data)            
+    def post(self, request):                            
             user=UserCrypto.objects.get(email= request.data['email'])
             wallets = Wallet.objects.filter(user=user.id)
             serializer = WalletSerializer(wallets, many=True)            
@@ -57,7 +57,14 @@ class WalletListView(GenericAPIView):
             # data = {                    
             #     "wallet_data": serializer.data,   
             # }
-            
+
+class CryptoCurrenciesList (GenericAPIView):
+    def get(self, request):
+        currencies= ('Bitcoin', 'Etherium', 'Litecoin','Cardano', 'Polkadot','Stellar')
+        data= {
+            "currencies" : currencies,
+        }        
+        return JsonResponse(data) 
             
 
                     

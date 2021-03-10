@@ -67,8 +67,8 @@ CORS_ORIGIN_WHITELIST = (
 )
 
 CORS_ALLOWED_HOSTS_ENV = os.environ.get('CORS_ALLOWED_HOSTS')
-if CORS_ALLOWED_HOSTS_ENV:
-    CORS_ORIGIN_WHITELIST.extend(CORS_ALLOWED_HOSTS_ENV.split(','))
+# if CORS_ALLOWED_HOSTS_ENV:
+#     CORS_ORIGIN_WHITELIST.extend(CORS_ALLOWED_HOSTS_ENV.split(','))
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
@@ -116,10 +116,10 @@ WSGI_APPLICATION = 'cetacoin.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': os.environ.get('ENGINE','django.db.backends.postgresql_psycopg2'),
-        'NAME': os.environ.get('DB_NAME'),
-        'USER':os.environ.get('DB_USER'),
-        'PASSWORD': os.environ.get('DB_PASSWORD'),
-        'HOST':os.environ.get('DB_HOST'),
+        'NAME': os.environ.get('DB_NAME','crypto'),
+        'USER':os.environ.get('DB_USER','postgres'),
+        'PASSWORD': os.environ.get('DB_PASSWORD','crypto_money'),
+        'HOST':os.environ.get('DB_HOST','localhost'),
         'PORT': os.environ.get('PORT',5432),
     }
 }

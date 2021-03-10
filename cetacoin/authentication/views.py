@@ -36,7 +36,7 @@ class RegisterView(GenericAPIView):
                         #"idWallet": "Wallet" + str(new_user.id)+"BTC",
                         "idWallet": mn,
                         "amount": 0,
-                        "currency": "algos",
+                        "currency": "Algos",
                         "alias": "alias",
                         "user": new_user.id,
                     }

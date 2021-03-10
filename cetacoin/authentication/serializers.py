@@ -14,6 +14,11 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         data['email'] = self.user.email
         data['first_name'] = self.user.first_name
         data['last_name'] = self.user.last_name
+        #list all the wallets for the user
+        user=UserCrypto.objects.get(email= self.user.email)
+        wallets = Wallet.objects.filter(user=user.id)
+        serializer = WalletSerializer(wallets, many=True)
+        data['wallets']= serializer.data
         return data
 
     @classmethod
