@@ -19,8 +19,13 @@ class WalletCreationView(GenericAPIView):
     serializer_class = WalletSerializer
     def post(self, request):
         with transaction.atomic():
-            print(request.data)
-            user=UserCrypto.objects.get(email= request.data['email'])
+            try:
+                user=UserCrypto.objects.get(email= request.data['email'])
+            except:
+                data={
+                    "error": "this email does not exist"
+                }
+                return Response(data,status=status.HTTP_400_BAD_REQUEST)
             # create a algod client
             acl = algod.AlgodClient(params.algod_token, params.algod_address)
             # generate an account
@@ -49,14 +54,17 @@ class WalletCreationView(GenericAPIView):
             
 class WalletListView(GenericAPIView):    
     serializer_class = WalletSerializer
-    def post(self, request):                            
+    def post(self, request):
+        try:
             user=UserCrypto.objects.get(email= request.data['email'])
-            wallets = Wallet.objects.filter(user=user.id)
-            serializer = WalletSerializer(wallets, many=True)            
-            return Response(serializer.data, status=status.HTTP_201_CREATED)                       
-            # data = {                    
-            #     "wallet_data": serializer.data,   
-            # }
+        except:
+            data={
+                "error": "this email does not exist"
+            }
+            return Response(data,status=status.HTTP_400_BAD_REQUEST)
+        wallets = Wallet.objects.filter(user=user.id)
+        serializer = WalletSerializer(wallets, many=True)            
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 class CryptoCurrenciesList (GenericAPIView):
     def get(self, request):
@@ -64,7 +72,7 @@ class CryptoCurrenciesList (GenericAPIView):
         data= {
             "currencies" : currencies,
         }        
-        return JsonResponse(data) 
+        return JsonResponse(data, status=status.HTTP_200_OK)
             
 
                     
