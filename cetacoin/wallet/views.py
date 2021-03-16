@@ -68,7 +68,7 @@ class WalletListView(GenericAPIView):
 
 class CryptoCurrenciesList (GenericAPIView):
     def get(self, request):
-        currencies= ('Bitcoin', 'Etherium', 'Litecoin','Cardano', 'Polkadot','Stellar')
+        currencies= ('Bitcoin', 'Ethereum', 'Litecoin','Cardano', 'Polkadot','Stellar')
         data= {
             "currencies" : currencies,
         }        
