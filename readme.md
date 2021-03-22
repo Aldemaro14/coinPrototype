@@ -1,39 +1,49 @@
-# Título del Proyecto
+# Cetacoin Backend
 
-_Acá va un párrafo que describa lo que es el proyecto_
+_Cetacoin Backend manage user accounts and their wallets through bitcoin core and provides the apis to Cetacoin Frontend
 
-## Comenzando 🚀
+## Construido con 🛠️
 
-_Estas instrucciones te permitirán obtener una copia del proyecto en funcionamiento en tu máquina local para propósitos de desarrollo y pruebas._
+* [Django REST](https://www.django-rest-framework.org/) - El framework web usado
+* [Pipenv](https://pipenv.pypa.io/en/latest/) - Manejador de dependencias
+* [Docker](https://www.docker.com/) - Para desarrollo
 
-Mira **Deployment** para conocer como desplegar el proyecto.
 
+## Entorno de desarrollo 🔧
 
 ### Pre-requisitos 📋
 
-_Que cosas necesitas para instalar el software y como instalarlas_
+* Docker
+* Docker-compose
+* [Algorand Sandbox](https://github.com/algorand/sandbox) - Algorand development enviroment
+
+### Instalación 
+
+_Iniciar red de algorand_
+
+_Entrar a carpeta donde se descargo "Algorand Sandbox" e iniciar los nodos con red Testnet"_
 
 ```
-Da un ejemplo
+./sandbox up testnet -s
 ```
 
-### Instalación 🔧
-
-_Una serie de ejemplos paso a paso que te dice lo que debes ejecutar para tener un entorno de desarrollo ejecutandose_
-
-_Dí cómo será ese paso_
+_Correr el archivo de docker-compose que levanta un contenedor para la aplicación y un contenedor con postgresql para almacenar los datos_
 
 ```
-Da un ejemplo
+docker-compose up
 ```
 
-_Y repite_
+_Abrir el navegador con la url: localhost:8080_
 
-```
-hasta finalizar
-```
 
-_Finaliza con un ejemplo de cómo obtener datos del sistema o como usarlos para una pequeña demo_
+## Entorno de producción 📦
+
+### Pre-requisitos 📋
+
+* Docker
+* Docker-compose
+
+_Agrega notas adicionales sobre como hacer deploy_
 
 ## Ejecutando las pruebas ⚙️
 
@@ -54,52 +64,3 @@ _Explica que verifican estas pruebas y por qué_
 ```
 Da un ejemplo
 ```
-
-## Despliegue 📦
-
-_Agrega notas adicionales sobre como hacer deploy_
-
-## Construido con 🛠️
-
-_Menciona las herramientas que utilizaste para crear tu proyecto_
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - El framework web usado
-* [Maven](https://maven.apache.org/) - Manejador de dependencias
-* [ROME](https://rometools.github.io/rome/) - Usado para generar RSS
-
-## Contribuyendo 🖇️
-
-Por favor lee el [CONTRIBUTING.md](https://gist.github.com/villanuevand/xxxxxx) para detalles de nuestro código de conducta, y el proceso para enviarnos pull requests.
-
-## Wiki 📖
-
-Puedes encontrar mucho más de cómo utilizar este proyecto en nuestra [Wiki](https://github.com/tu/proyecto/wiki)
-
-## Versionado 📌
-
-Usamos [SemVer](http://semver.org/) para el versionado. Para todas las versiones disponibles, mira los [tags en este repositorio](https://github.com/tu/proyecto/tags).
-
-## Autores ✒️
-
-_Menciona a todos aquellos que ayudaron a levantar el proyecto desde sus inicios_
-
-* **Andrés Villanueva** - *Trabajo Inicial* - [villanuevand](https://github.com/villanuevand)
-* **Fulanito Detal** - *Documentación* - [fulanitodetal](#fulanito-de-tal)
-
-También puedes mirar la lista de todos los [contribuyentes](https://github.com/your/project/contributors) quíenes han participado en este proyecto. 
-
-## Licencia 📄
-
-Este proyecto está bajo la Licencia (Tu Licencia) - mira el archivo [LICENSE.md](LICENSE.md) para detalles
-
-## Expresiones de Gratitud 🎁
-
-* Comenta a otros sobre este proyecto 📢
-* Invita una cerveza 🍺 o un café ☕ a alguien del equipo. 
-* Da las gracias públicamente 🤓.
-* etc.
-
-
-
----
-⌨️ con ❤️ por [Villanuevand](https://github.com/Villanuevand) 😊
