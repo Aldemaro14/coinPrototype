@@ -6,14 +6,10 @@ ENV PATH="/scripts:${PATH}"
 RUN pip install pipenv
 RUN apk add --update --no-cache --virtual .tmp gcc libc-dev linux-headers build-base libffi-dev 
 RUN apk add openssl openssl-dev python3-dev gmp-dev postgresql-dev sqlite-dev
-#RUN pip install -r /requirements.txt
 #RUN apk del .tmp
 WORKDIR /usr/src
 COPY Pipfile .
-#COPY Pipfile.lock .
 RUN pipenv install --system --dev --skip-lock
-#RUN pip install bitcoinlib
-#RUN pip install py-algorand-sdk
 RUN mkdir /app
 #Change "./app" for your project name
 COPY ./cetacoin /app
