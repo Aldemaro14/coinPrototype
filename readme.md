@@ -1,6 +1,6 @@
 # Cetacoin Backend
 
-_Cetacoin Backend manage user accounts and their wallets through bitcoin core and provides the apis to Cetacoin Frontend
+_Cetacoin Backend manage user accounts and their wallets through bitcoin core and provides the apis to Cetacoin Frontend_
 
 ## Construido con 🛠️
 
@@ -13,21 +13,23 @@ _Cetacoin Backend manage user accounts and their wallets through bitcoin core an
 
 ### Pre-requisitos 📋
 
-* Docker
-* Docker-compose
+* [Docker] (https://www.docker.com/)
+* [Docker-compose] (https://docs.docker.com/compose/)
 * [Algorand Sandbox](https://github.com/algorand/sandbox) - Algorand development enviroment
 
 ### Instalación 
 
 _Iniciar red de algorand_
 
-_Entrar a carpeta donde se descargo "Algorand Sandbox" e iniciar los nodos con red Testnet"_
+_Entrar a carpeta donde se descargo "Algorand Sandbox" e iniciar los nodos con red Testnet_
 
 ```
 ./sandbox up testnet -s
 ```
 
 _Correr el archivo de docker-compose que levanta un contenedor para la aplicación y un contenedor con postgresql para almacenar los datos_
+
+_Entrar a la carpeta donde se clono es repositorio y correr el siguiente comando:_
 
 ```
 docker-compose up
@@ -40,27 +42,15 @@ _Abrir el navegador con la url: localhost:8080_
 
 ### Pre-requisitos 📋
 
-* Docker
-* Docker-compose
+* [Docker] (https://www.docker.com/)
+* [Docker-compose] (https://docs.docker.com/compose/)
 
-_Agrega notas adicionales sobre como hacer deploy_
+### Instalación 
+_Correr el archivo de docker-compose para producción que levanta un contenedor para la aplicación y un contenedor con postgresql para almacenar los datos_
 
-## Ejecutando las pruebas ⚙️
-
-_Explica como ejecutar las pruebas automatizadas para este sistema_
-
-### Analice las pruebas end-to-end 🔩
-
-_Explica que verifican estas pruebas y por qué_
+_Entrar a la carpeta donde se clono es repositorio y correr el siguiente comando:_
 
 ```
-Da un ejemplo
+docker-compose -f "docker-compose-deploy.yml" up -d --build 
 ```
 
-### Y las pruebas de estilo de codificación ⌨️
-
-_Explica que verifican estas pruebas y por qué_
-
-```
-Da un ejemplo
-```
