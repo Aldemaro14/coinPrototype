@@ -40,13 +40,14 @@ class UserManager(BaseUserManager):
 
 class UserCrypto(AbstractUser):
     username = None
-    email = models.EmailField(('email address'), unique=True)
-    #wallet_id = models.ManyToManyField(Wallet)
-
+    email = models.EmailField(('email address'), unique=True)    
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
-
     objects = UserManager()
+
+class MinerCrypto(models.Model):
+    username= models.CharField(max_length=200, unique=True)
+
 
 
 class Wallet(models.Model):
@@ -54,4 +55,5 @@ class Wallet(models.Model):
     amount = models.DecimalField(max_digits=12, decimal_places=5)
     currency = models.CharField(max_length=15)
     alias = models.CharField(max_length=122)
-    user = models.ForeignKey(UserCrypto, on_delete=models.CASCADE)
+    user = models.ForeignKey(UserCrypto, on_delete=models.CASCADE, null= True)
+    miner = models.ForeignKey(MinerCrypto, on_delete=models.CASCADE, null=True)
