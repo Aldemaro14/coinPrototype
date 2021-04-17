@@ -4,21 +4,21 @@ services:
   db:
     image: postgres:13.2-alpine 
     container_name: db
-    restart: always
+    #restart: always
     environment:
       POSTGRES_PASSWORD: crypto_money
       POSTGRES_DB: crypto
       POSTGRES_USER: postgres
     ports:
       - 5432:5432
-    volumes:
-      - ./postgres_data:/var/lib/postgresql/data
+    #volumes:
+      #- ./postgres_data:/var/lib/postgresql/data
   app:
     build:
       context: .
       dockerfile: local.Dockerfile
     container_name: cetacoin
-    restart: always
+    #restart: always
     ports:
       - "8000:8000"
     volumes:
