@@ -1,7 +1,7 @@
 from . import params
 from django.shortcuts import render
 from rest_framework.generics import GenericAPIView
-from .serializers import UserSerializer, LoginSerializer, MyTokenObtainPairSerializer, WalletSerializer
+from .serializers import UserSerializer, LoginSerializer, MyTokenObtainPairSerializer, WalletSerializer, MinerSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from django.conf import settings
@@ -57,6 +57,47 @@ class RegisterView(GenericAPIView):
                     new_user.delete()
                     return Response(wallet_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class RegisterMinerView(GenericAPIView):
+    def post(self, request):
+        with transaction.atomic():
+            serializer = MinerSerializer(data=request.data)
+            if serializer.is_valid():
+                new_miner = serializer.save()
+                if new_miner:
+                    acl = algod.AlgodClient(params.algod_token, params.algod_address)
+                    # generate an account
+                    private_key, address = account.generate_account()
+                    # extract the mnemonic phrase from the private key
+                    mn = mnemonic.from_private_key(private_key)
+                    wallet_dict = {
+                        #"idWallet": "Wallet" + str(new_user.id)+"BTC",
+                        "idWallet": mn,
+                        "amount": 0,
+                        "currency": "Algos",
+                        "alias": "alias",
+                        "miner": new_miner.id,
+                    }
+                    wallet_serializer = WalletSerializer(data=wallet_dict)
+                    #print(wallet_serializer)
+                    if wallet_serializer.is_valid():
+                        # Saving wallet object associated for the user
+                        wallet_serializer.save()
+                        data = {
+                            "miner_data": serializer.data,
+                            "wallet_data": wallet_serializer.data,
+                            #"wallet_bitcoinb": w.as_json(),
+                            "wallet_net_info":acl.account_info(address),
+                        }
+                        return Response(data, status=status.HTTP_201_CREATED)
+                    # deleting new user if the default wallet could not be createad
+                    #wallets.wallet_delete_if_exists("Wallet" + str(new_user.id)+"BTC")
+                    new_miner.delete()
+                    return Response(wallet_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                    
+            
+
 
 
 class LoginView(GenericAPIView):

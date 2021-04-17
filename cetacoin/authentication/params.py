@@ -8,10 +8,10 @@ home = expanduser("~")
 # change these after starting the node and kmd
 
 kmd_token = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-kmd_address = "http://172.17.0.1:4002"
+kmd_address = "http://localhost:4002"
 
 algod_token = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-algod_address = "http://172.17.0.1:4001"
+algod_address = "http://localhost:4001"
 
 # path to the data directory
 #data_dir_path = environ.get("ALGORAND_DATA", home + "/node/testnetdata")
